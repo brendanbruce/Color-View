@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Color View",
+  "description": "See the color palettes to any website you visit",
+  "version": "1.0",
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["jquery-2.2.3.min.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "background": {
+    "scripts": ["jquery-2.2.3.min.js", "background.js"],
+    "persistent": false
+  },
+
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "Find colors"
+  },
+
+  "permissions": [
+    "activeTab", "tabs"
+  ]
+}
