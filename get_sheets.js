@@ -7,7 +7,7 @@ function getHexValues() {
 
   for (var i = 0; i < document.styleSheets.length; i++) {
     checkNull(i, stylesheets);
-  };
+  }
 
   var i = 0;
   function forLoop() {
@@ -22,10 +22,10 @@ function getHexValues() {
       console.log(hexCollection);
       loopOut(hexCollection);
     }
-  };
+  }
 
   forLoop();
-};
+}
 
 function loopOut(collection) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -33,13 +33,13 @@ function loopOut(collection) {
       console.log(response.farewell);
     });
   });
-};
+}
 
 function checkNull(index, array) {
   if (document.styleSheets[index].href !== null) {
     array.push(document.styleSheets[index].href);
   }
-};
+}
 
 function collectColors(item) {
   var collectedSet = [].concat.apply([], item);
@@ -50,7 +50,7 @@ function collectColors(item) {
     }
   }
   return collectedUniques;
-};
+}
 
 function grabColors(array, index, callback) {
   var xhr = new XMLHttpRequest();
@@ -62,7 +62,7 @@ function grabColors(array, index, callback) {
     if (this.readyState === DONE) {
       if (this.status === OK) {
         if (typeof callback == "function") {
-          callback.apply(xhr)
+          callback.apply(xhr);
         }
       } else {
         console.log("error " + xhr.status);
@@ -71,12 +71,12 @@ function grabColors(array, index, callback) {
   };
 
   xhr.send(null);
-};
+}
 
 function findHex(stylesheet) {
   var hexExpression = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/gi;
   var str = stylesheet;
   var test = str.match(hexExpression);
   return test;
-};
+}
 
