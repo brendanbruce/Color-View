@@ -1,18 +1,10 @@
-var port = chrome.runtime.connect({ name: "mycontentscript" });
-port.onMessage.addListener(function(message,sender){
-  alert(doc[0].href);
-});
-
 $(document).ready(function() {
   cssExpression = /color:\s.*;/gi;
   hexExpression = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/;
   stylesheets = getStyleSheets();
+  console.log(stylesheets);
 
   $("#loadCss").bind("click", function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      $("#test").append(tabs[0]);
-      console.log(tabs[0]);
-    });
     var colors = [];
 
     $.each(stylesheets, function(index, value) {
@@ -44,10 +36,8 @@ $(document).ready(function() {
       hexColors.push(hexCode[0]);
     });
 
-    console.log(hexColors);
-
     return hexColors;
-  };
+  }
 
   function getStyleSheets() {
     var stylesheets = [];
@@ -56,6 +46,6 @@ $(document).ready(function() {
       stylesheets.push(document.styleSheets[index].href);
     });
 
-    return stylesheets
-  };
+    return stylesheets;
+  }
 });
