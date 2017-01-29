@@ -7,7 +7,11 @@ chrome.runtime.onMessage.addListener(
 
       var colors = [];
 
-      $("body").append("<div class='swatch__container' id='swatchContainer'></div>");
+      initialize();
+
+      $("#convertToHsl").bind("click", function() {
+        displayAsHsl(colorSet);
+      });
 
       $.each(stylesheets, function(index, value) {
         colors.push.apply(colors, returnColors(stylesheets[index]));
@@ -54,10 +58,19 @@ chrome.runtime.onMessage.addListener(
       });
 
       $.each(colorSet, function(index,value) {
+        buildSwatches(value);
+      });
+
+      function buildSwatches(value) {
         var colorSwatchText = 
           $("<div/>")
           .attr("class", "swatch__text")
-          .html("<h5>" + value.hex + "</h5>");
+          .html(
+            "<h5>" + value.hex + "</h5>" +
+            "<h5>" + value.hue + "</h5>" +
+            "<h5>" + value.saturation + "</h5>" +
+            "<h5>" + value.lightness + "</h5>"
+          );
 
         var colorSwatchInner =
           $("<div/>")
@@ -71,7 +84,16 @@ chrome.runtime.onMessage.addListener(
           .append(colorSwatchText);
 
         var swatchDOM = $("#swatchContainer").append($(colorSwatch));
-      });
+      }
+
+      function initialize() {
+        $("body").append("<div class='container' id='container'></div>");
+        //create header
+        $("#container").append("<header class='header' id='header'></header>");
+        $("#header").append("<a class='button' href='#' id='convertToHsl'>Convert to HSL</a>");
+        //create swatch container
+        $("#container").append("<div class='swatch__container' id='swatchContainer'></div>");
+      }
 
       function returnColors(url) {
         var colorSets;
@@ -104,6 +126,19 @@ chrome.runtime.onMessage.addListener(
         });
 
         return stylesheets;
+      }
+
+      function displayAsHsl(colorSet) {
+        $("#swatchContainer").html("");
+        var hslColorSet = colorSet;
+        hslColorSet.sort(function(a, b) {
+          return a.hue - b.hue;
+        });
+        $.each(hslColorSet, function(index,value) {
+          if (value.saturation > 0.1) {
+            buildSwatches(value);
+          }
+        });
       }
 
       function rgbToHsl(r, g, b) {
